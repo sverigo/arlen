@@ -1,0 +1,23 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Error</title>
+</head>
+<body>
+    <h1>Error</h1>
+    <p>Редирект спустя 3 секунды</p>
+    @Html.ActionLink("Home", "Index");
+</body>
+</html>
+
+<script>
+    window.setTimeout(function () {
+        window.location.href = '/';
+    }, 3000);
+</script>
