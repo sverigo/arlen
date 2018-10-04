@@ -5,21 +5,19 @@ namespace arlen.Infrastructure
 {
     public class EmailService
     {
-        /* Server success connection variables */
+        // Server success connection variables 
         private string APPLICATION_EMAIL = "noreply.arlen@gmail.com";
         private string APPLICATION_EMAIL_PASS = "ArlenPass";
         private string SMTP_SERVER = "smtp.gmail.com";
         private int SMTP_PORT = 465; // or 587
         private bool SMTP_SSL = true;
 
-        private AccountManager accManager = new AccountManager();
-
-        public bool SendEmail(string subject, string message)
+        public bool SendEmail(string addr, string subject, string message)
         {
             var emailMessage = new MimeMessage();
 
             emailMessage.From.Add(new MailboxAddress("Arlen Application", APPLICATION_EMAIL));
-            emailMessage.To.Add(new MailboxAddress("Arlen Administrator", accManager.GetAccount(1).AccountEmail));
+            emailMessage.To.Add(new MailboxAddress("Arlen Administrator", addr));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {

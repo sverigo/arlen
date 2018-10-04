@@ -2,18 +2,46 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using arlen.Infrastructure;
+using arlen.Models;
 
 namespace arlen.Controllers
 {
     public class ContactsController : Controller
     {
-        // GET: /<controller>/
-        public IActionResult Index()
+        AccountManager accManager;
+        public ContactsController(ArlenContext db)
         {
-            return View();
+            accManager = new AccountManager(db);
+        }
+        
+        // Feedback
+        [HttpPost]
+        public ActionResult Feedback()
+        {
+            if (Request.Form["g-recaptcha-response"] != string.Empty)
+            {
+                User acc = accManager.GetAccount(1);    
+
+                string msg = Request.Form["message"];
+                string email = Request.Form["email"];
+                string phone = Request.Form["phone"];
+                string name = Request.Form["name"];
+
+                string subject = "New Feedback - Arlen";
+
+                string text = "Hi <br>" +
+                    "You got a new reply from user: <strong>" + name + "</strong><br>" +
+                    "<strong>Email:</strong> " + email + ". <strong>Phone:</strong> " + phone + "<br>" +
+                    "<br><div style='border-left: 2px solid blue;'><div style='margin: 5px;'>" + msg + "</div></div>";
+
+                EmailService svc = new EmailService();
+                svc.SendEmail(acc.AccountEmail, subject, text);
+                return View("Success");
+            }
+            return View("Error");
         }
     }
 }

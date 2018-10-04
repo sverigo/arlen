@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace arlen.Views.Home
+namespace arlen.Views.Events
 {
     public class IndexModel : PageModel
     {

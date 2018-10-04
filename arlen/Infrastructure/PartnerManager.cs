@@ -1,22 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using arlen.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace arlen.Infrastructure
 {
     public class PartnerManager
     {
         ArlenContext database;
+        public PartnerManager(ArlenContext db)
+        {
+            database = db;
+        }
 
         public IEnumerable<Partner> All
         {
             get { return database.Partners.AsEnumerable(); }
-        }
-
-        public PartnerManager()
-        {
-            database = new ArlenContext();
         }
 
         public void Add(Partner pm)
@@ -27,7 +25,7 @@ namespace arlen.Infrastructure
 
         public void Edit(Partner pm)
         {
-            database.Entry(pm).State = EntityState.Modified;
+            database.Entry(pm).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             database.SaveChanges();
         }
 

@@ -1,4 +1,5 @@
-﻿namespace arlen.Models
+﻿
+namespace arlen.Models
 {
     public class Service
     {

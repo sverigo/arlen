@@ -1,0 +1,44 @@
+﻿@model arlen.Models.News
+@{
+    ViewBag.Title = "More info about news";
+}
+
+<div class="details container-fluid">
+    <div class="details-block container">
+        <div class="details-header" style="background-image: url(@Model.Images);">
+            <div class="details-darker">
+                <h1>@Model.Title</h1>
+            </div>
+            <div class="details-header-date">
+                @Model.CreateTime.ToShortDateString()
+            </div>
+        </div>
+        <div class="details-content">
+            @Html.Raw(Model.Content)
+        </div>
+        <div class="details-return">
+            <a href="/News/Index">
+                <span>
+                    <img src="~/Content/images/back-arrow.png" />
+                    Другие новости
+                </span>
+            </a>
+        </div>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="details-admin">
+                <a href="/News/Edit/@Model.Id">
+                    <span class="details-admin-edit">
+                        Редактировать
+                    </span>
+                </a>
+                <a href="/News/Delete/@Model.Id" onclick="return confirm('Действительно удалить?');">
+                    <span class="details-admin-remove">
+                        Удалить
+                    </span>
+                </a>
+            </div>
+        }
+    </div>
+</div>

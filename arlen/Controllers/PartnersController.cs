@@ -2,18 +2,109 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using arlen.Infrastructure;
+using arlen.Models;
 
 namespace arlen.Controllers
 {
     public class PartnersController : Controller
     {
-        // GET: /<controller>/
-        public IActionResult Index()
+        PartnerManager pmManager;
+        public PartnersController(ArlenContext db)
+        {
+            pmManager = new PartnerManager(db);
+        }
+        private string DRIVE_FOLDER_NAME = "user_images";
+
+        // GET: Partners
+        public ActionResult Index()
+        {
+            IEnumerable<Partner> allPromos = pmManager.All;
+            return View(allPromos);
+        }
+
+        // GET: Partners/Create
+        public ActionResult Create()
         {
             return View();
         }
+
+        // POST: Partners/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Partner pm)
+        {
+            if (ModelState.IsValid)
+            {/*
+                var file = Request.Files["downl"];
+                if (file != null && file.ContentType.Contains("image/"))
+                {
+                    string fileName = System.Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
+
+                    GoogleDriveManager driveClient = new GoogleDriveManager();
+
+                    pm.Image = driveClient.DriveUploadAndGetSrc(file, DRIVE_FOLDER_NAME);
+                }*/
+                pmManager.Add(pm);
+                return Redirect("/Partners");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        // GET: Partners/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+            Partner pm = pmManager.FindById(id);
+            if (pm == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(pm);
+        }
+
+        // POST: Partners/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Partner pm)
+        {
+            if (ModelState.IsValid)
+            {/*
+                var file = Request.Files["downl"];
+                if (file != null && file.ContentType.Contains("image/"))
+                {
+                    string fileName = System.Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
+
+                    GoogleDriveManager driveClient = new GoogleDriveManager();
+
+                    pm.Image = driveClient.DriveUploadAndGetSrc(file, DRIVE_FOLDER_NAME);
+                }*/
+                pmManager.Edit(pm);
+                return Redirect("/Partners");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        // GET: Partners/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id != null)
+            {
+                pmManager.RemoveById(id);
+            }
+            return RedirectToAction("Index");
+        }
+        
     }
 }

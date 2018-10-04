@@ -1,5 +1,226 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿*using System.Web.Optimization;
+@using arlen.Models
+@model User
 @{
+    ViewBag.Title = "Settings";
 }
+<script>
+    function show(id) {
+        var style = document.getElementById(id).style;
+        style.display = (style.display == "none") ? "block" : "none";
+    }
+    function tabs(id) {
+        document.getElementById('about-us').style.display = "none";
+        document.getElementById('contacts').style.display = "none";
+        document.getElementById('files').style.display = "none";
+        document.getElementById('account').style.display = "none";
+
+        var style = document.getElementById(id).style.display = "block";
+    }
+
+    var ja = 1;
+    function add_phone_field() {
+        var name = "Phone" + ja;
+        var button = '<input class="btn btn-outline-danger" type="button" value="Х" id="delButton' + ja + '" onclick="$(\'#' + name + '\').remove(); $(\'#delButton' + ja + '\').remove();" />';
+        var input = '<input class="form-control phone-mask" type="text" name="' + name + '" id="' + name + '"/>';
+
+        $("#phonediv").append('<div>' + input + button + '</div>');
+        $('.phone-mask').inputmask('+38(999)999-99-99');
+        ja++;
+    }
+</script>
+<style>
+    #youtube-howto, #maps-howto {
+        font-size: medium;
+        display: none;
+        margin-top: 0px;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+    }
+</style>
+<div class="container-fluid py-3">
+    <div class="col-md-6 mx-auto">
+        <a href="#" onclick="tabs('about-us')" class="btn btn-light">О компании</a>
+        <a href="#" onclick="tabs('contacts')" class="btn btn-light">Контакты</a>
+        <a href="#" onclick="tabs('files')" class="btn btn-light">Файлы</a>
+        <a href="#" onclick="tabs('account')" class="btn btn-light">Аккаунт</a>
+        @Html.ActionLink("Настройка рекламы", "Index", "Promos", new { area = "" }, new { @class = "btn btn-info" })
+        @Html.ActionLink(/*Resources.Resource.Logout*/"Logout", "Logout", "Account", new { area = "" }, new { @class = "btn btn-danger" })
+
+        <div class="card card-body">
+            @Html.ValidationSummary(false)
+            <fieldset>
+                @using (Html.BeginForm("Settings", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div id="about-us">
+                        <h3 class="text-center mb-4">О компании</h3>
+                        <div class="form-group">
+                            @Html.Label("Логотип")
+                            @Html.TextBoxFor(x => x.Logo, new { htmlAttributes = new { @class = "form-control input-lg", @autofocus = true } })
+                            @Html.Editor("downl-logo", new { htmlAttributes = new { @class = "form-control input-lg", @type = "file", @title = "Загрузить лого с компьютера" } })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Раздел О Нас (не более 500 символов)")
+                            @Html.TextAreaFor(x => x.AboutText, new { @class = "form-control input-lg ckeditor", placeholder = "Введите информацию", @autofocus = true })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Изображение в разделе О Нас")
+                            @Html.TextBoxFor(x => x.AboutImage, new { @class = "form-control input-lg", placeholder = "Ссылка на картинку", @autofocus = true })
+                            @Html.Editor("downl-about", new { htmlAttributes = new { @class = "form-control input-lg", @type = "file", @title = "Загрузить файл с компьютера" } })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Видео")
+                            @Html.CheckBoxFor(x => x.AboutVideoMode)
+                            <p onclick="show('youtube-howto')" style="text-decoration:underline;">Инструкция</p>
+                            <div id="youtube-howto" class="card bg-light">
+                                <ul>
+                                    <li>Выберите нужное видео на <a href="https://www.youtube.com/" target="_blank">YouTube</a></li>
+                                    <li>В адресной строке указан ID видео: www.youtube.com/watch?v=<b>'video-id</b>'</li>
+                                    <li>Для того чтобы вставить плеер на сайт, нужно изменить ссылку: https://www.youtube.com/embed/<b>'video-id'</b></li>
+                                    <li>Обновите ссылку в поле с видео</li>
+                                </ul>
+                            </div>
+                            @Html.TextBoxFor(x => x.AboutVideo, new { @class = "form-control input-lg", placeholder = "Ссылка на YouTube", @autofocus = true })
+                        </div>
+                    </div>
+
+                    <div id="contacts" style="display: none;">
+                        <h3 class="text-center mb-4">Контактная информация</h3>
+
+                        <div class="form-group">
+                            @Html.Label("Телефон")
+                            <div id="phonediv">
+                                @*{
+                                    if (Model.Phones.IsEmpty())
+                                    {
+                                        @Html.TextBox("Phone0", "", new { @class = "form-control", placeholder = "Введите телефон", @autofocus = true })
+
+                                    }
+                                    int j = 0;
+                                    string[] phones = Model.Phones.Split('|');
+                                    foreach (var phone in phones)
+                                    {
+                                        string name = "Phone" + j.ToString();
+                                        string delButton = "del-phone" + j.ToString();
+                                        <input type="text" class="form-control phone-mask" placeholder="Введите телефон" autofocus name="@name" id="@name" value="@phone" />
+                                        <input class="btn btn-outline-danger" type="button" value="Х" id="@delButton"
+                                               onclick="$('#@name').remove(); $('#@delButton').remove();" />
+                                        j++;
+                                    }
+                                }*@
+                            </div>
+                            <input class="btn btn-outline-success" type="button" value="+" onclick="add_phone_field();" />
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Email")
+                            @Html.TextBoxFor(x => x.Emails, new { @class = "form-control input-lg", placeholder = "Введите email", @autofocus = true })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Социальные сети")
+                            <p>Youtube</p>
+                            @Html.TextBoxFor(x => x.Youtube, new { @class = "form-control input-lg", placeholder = "https://youtube.com/...", @autofocus = true })
+                            <p>Facebook</p>
+                            @Html.TextBoxFor(x => x.Facebook, new { @class = "form-control input-lg", placeholder = "https://facebook.com/...", @autofocus = true })
+                            <p>LinkedIn</p>
+                            @Html.TextBoxFor(x => x.Linkedin, new { @class = "form-control input-lg", placeholder = "https://linkedin.com/...", @autofocus = true })
+                            <p>Twitter</p>
+                            @Html.TextBoxFor(x => x.Twitter, new { @class = "form-control input-lg", placeholder = "https://twitter.com/...", @autofocus = true })
+                            <p>Viber</p>
+                            @Html.TextBoxFor(x => x.Viber, new { @class = "form-control input-lg phone-mask", placeholder = "Viber", @autofocus = true })
+                            <p>WhatsApp</p>
+                            @Html.TextBoxFor(x => x.Whatsapp, new { @class = "form-control input-lg phone-mask", placeholder = "WhatsApp", @autofocus = true })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Адрес")
+                            @Html.TextBoxFor(x => x.Address, new { @class = "form-control input-lg", placeholder = "Введите адрес", @autofocus = true })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Ссылка на карту")
+                            <p onclick="show('maps-howto')" style="text-decoration:underline;">Инструкция</p>
+                            <div id="maps-howto" class="card bg-light">
+                                <ul>
+                                    <li>Откройте сайт <a href="https://maps.google.com/" target="_blank">Google Maps</a></li>
+                                    <li>Введите нужный адрес</li>
+                                    <li>Убедитесь, что на карте отобразился искомый объект</li>
+                                    <li>В меню слева выберите пункт <strong>Ссылка/Код</strong></li>
+                                    <li>В появившемся окне выберите вкладку <strong>Встраивание карт</strong></li>
+                                    <li>Скопируйте код кнопкой <strong>Копировать HTML</strong></li>
+                                    <li>Вставьте код в поле ниже вместо существующего</li>
+                                </ul>
+                            </div>
+                            <input type="button" value="Очистить поле" onclick="document.getElementById('Map').setAttribute('value', '')" />
+                            @Html.TextBoxFor(x => x.Map, new { @class = "form-control input-lg", placeholder = "Введите ссылку", @autofocus = true })
+                        </div>
+                    </div>
+
+                    <div id="files" style="display: none;">
+                        <h3 class="text-center mb-4">Файлы загрузок</h3>
+                        <div class="form-group">
+                            @{
+                                string[] temp = Model.Files.Split('|');
+                                List<string> files = new List<string>();
+                                foreach (string line in temp)
+                                {
+                                    string[] items = line.Split('^');
+                                    files.Add(items[0]);
+                                    if (items.Length < 2)
+                                    {
+                                        files.Add(items[0]);
+                                    }
+                                    else
+                                    {
+                                        files.Add(items[1]);
+                                    }
+
+                                }
+                                for (int i = 0, i2 = 0; i < 3; i++, i2++)
+                                {
+                                    @Html.Label("Документ № " + (i + 1));
+                                    @Html.TextBox("title" + i.ToString(), files[i2], new { @class = "form-control input-lg", @placeholder = "Введите заголовок", @autofocus = true, @title = "Заголовок будет отображаться на главной странице" });
+                                    @Html.Label("Ссылка");
+                                    @Html.TextBox("link" + i.ToString(), files[++i2], new { @class = "form-control input-lg", @placeholder = "Введите ссылку на файл", @autofocus = true, @title = "URL-адрес загрузки файла" });
+                                    @Html.Label("Загрузить файл");
+                                    @Html.Editor("downl" + i.ToString(), new { htmlAttributes = new { @class = "form-control input-lg", @type = "file", @title = "Загрузить файл с компьютера" } })
+                                    <hr />
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <div id="account" style="display: none;">
+                        <h3 class="text-center mb-4">Аккаунт</h3>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="returnURL" value="@ViewBag.returnURL" />
+                        <div class="form-group">
+                            @Html.Label("Логин")
+                            @Html.TextBoxFor(x => x.Login, new { @class = "form-control input-lg", @placeholder = "Введите логин", @autofocus = true, @title = "Логин для входа в панель администратора" })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Пароль")
+                            @Html.PasswordFor(x => x.Password, new { @class = "form-control input-lg", @placeholder = "Введите пароль", @title = "Пароль для входа в панель администратора" })
+                            @Html.Hidden("oldPass", Model.Password)
+                        </div>
+                        <div class="form-group">
+                            @Html.Password("PasswordConfirm", "", new { @class = "form-control input-lg", @placeholder = "Повторите пароль", @title = "Повторите пароль" })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Служебная почта")
+                            @Html.TextBoxFor(x => x.AccountEmail, new { @class = "form-control input-lg", @placeholder = "Введите email", @autofocus = true, @title = "Адрес почты, на которую будут приходить уведомления сайта" })
+                        </div>
+                    </div>
+
+                    <input id="ConfirmButton" class="btn btn-lg btn-block btn-login" value="Сохранить" type="submit" />
+                                }
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-pass-validation.js" type="text/javascript"></script>
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+*Scripts.Render("~/bundles/inputmask")
+<script>
+    $('.phone-mask').inputmask('+38(999)999-99-99');
+</script>

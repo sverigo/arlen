@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using arlen.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace arlen.Infrastructure
 {
-    public class EventManager
+    public class EventsManager
     {
         ArlenContext database;
+
+        public EventsManager(ArlenContext db)
+        {
+            database = db;
+        }
 
         public IEnumerable<Event> AllEvents
         {
             get { return database.Events.AsEnumerable(); }
-        }
-
-        public EventManager()
-        {
-            database = new ArlenContext();
         }
 
         public void AddEvent(Event e)

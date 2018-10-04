@@ -1,5 +1,49 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿*sing PagedList.Mvc
+*using System.Web.Optimization;
+@using System.Text.RegularExpressions;
+*model PagedList.IPagedList<arlen.Models.News>
+@model IEnumerable<arlen.Models.News>
+
 @{
+    ViewBag.Title = "Новости";
 }
+
+*Styles.Render("~/Content/pagedlist")
+
+<div class="news-index container-fluid">
+    <div class="news-block container">
+        <div class="news-header">
+            <h1>Узнавайте о главных новостях в сфере консалтинговых услуг</h1>
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="admin-block">
+                <a href="@Url.Action("Create", "News", new { area = "" })">
+                    <span class="admin-create-button">Добавить</span>
+                </a>
+            </div>
+        }
+        <div class="news-content-block">
+            @foreach (var item in Model)
+            {
+                string newscontent = Regex.Replace(item.Content, @"&lt;.+?&gt;|&nbsp;|<[^>]*>", "").Trim();
+
+                <div class="block-item col-sm-12 col-md-12 col-lg-10 col-xl-10 offset-lg-1 offset-xl-1">
+                    <img class="block-item-image" src="@item.Images" />
+                    <div class="block-item-content">
+                        <h3 class="title">@item.Title</h3>
+                        <p class="content">@newscontent</p>
+                        <span class="datetime">@item.CreateTime.ToShortDateString()</span>
+                        <a class="details-link" href="/News/Details/@item.Id ">
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="pageSwitcher">
+            *Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/truncate-text.js"></script>

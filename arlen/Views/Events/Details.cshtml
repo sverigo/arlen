@@ -1,0 +1,56 @@
+﻿@model arlen.Models.Event
+@{
+    ViewBag.Title = "More info about event";
+}
+
+<div class="details container-fluid">
+    <div class="details-block container">
+        <div class="details-header" style="background-image: url(@Model.Images);">
+            <div class="details-darker">
+                <h1>@Model.Title</h1>
+            </div>
+            <div class="details-header-date">
+                @Model.Date.ToShortDateString() / @Model.Place
+            </div>
+        </div>
+        <div class="details-content">
+            @Html.Raw(Model.Content)
+        </div>
+        *{
+            string[] file = Model.Files.Split('|');
+            if (file[0].Length > 0 && file[1].Length > 0)
+            {
+                <div class="details-download">
+                    <a href="*file[1]">
+                        <span class="download-button">*file[0]</span>
+                    </a>
+                </div>
+            }
+        }
+
+        <div class="details-return">
+            <a href="/Events/Index">
+                <span>
+                    <img src="~/Content/images/back-arrow.png" />
+                    Другие тренинги
+                </span>
+            </a>
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="details-admin">
+                <a href="/Events/Edit/@Model.Id">
+                    <span class="details-admin-edit">
+                        Редактировать
+                    </span>
+                </a>
+                <a href="/Events/Delete/@Model.Id" onclick="return confirm('Действительно удалить?');">
+                    <span class="details-admin-remove">
+                        Удалить
+                    </span>
+                </a>
+            </div>
+        }
+    </div>
+</div>
+

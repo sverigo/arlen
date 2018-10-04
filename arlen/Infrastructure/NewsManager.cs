@@ -10,14 +10,14 @@ namespace arlen.Infrastructure
     {
         ArlenContext database;
 
+        public NewsManager(ArlenContext db)
+        {
+            database = db;
+        }
+
         public IEnumerable<News> AllNews
         {
             get { return database.NewsList.AsEnumerable(); }
-        }
-
-        public NewsManager()
-        {
-            database = new ArlenContext();
         }
 
         public void AddNews(News news)

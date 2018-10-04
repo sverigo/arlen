@@ -1,5 +1,47 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<arlen.Models.Promo>
 @{
+    ViewBag.Title = "Index";
 }
+
+<div class="news-index container-fluid" style="margin-bottom: 40px;">
+    <div class="news-block container">
+        <div class="news-header">
+            <h1>Узнавайте о главных новостях в сфере консалтинговых услуг</h1>
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="admin-block">
+                <a href="@Url.Action("Create", "Promos", new { area = "" })">
+                    <span class="admin-create-button">Добавить</span>
+                </a>
+            </div>
+        }
+        <div class="news-content-block">
+            @foreach (var item in Model)
+            {
+                <div class="block-item col-sm-12 col-md-12 col-lg-10 col-xl-10 offset-lg-1 offset-xl-1">
+                    <img class="block-item-image" src="@item.Image" />
+                    <div class="block-item-content">
+                        <h3 class="title">@item.Text</h3>
+                        <div style="margin-top: 10px;">
+
+                            <div class="details-admin">
+                                <a href="/Promos/Edit/@item.Id">
+                                    <span class="details-admin-edit">
+                                        Редактировать
+                                    </span>
+                                </a>
+                                <a href="/Promos/Delete/@item.Id" onclick="return confirm('Действительно удалить?');">
+                                    <span class="details-admin-remove">
+                                        Удалить
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

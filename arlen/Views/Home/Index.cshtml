@@ -1,1 +1,141 @@
-﻿<h1>Hello world!</h1>
+﻿@*using System.Web.Optimization;*@
+@model Dictionary<string, object>
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+<link rel="stylesheet" href="~/Scripts/owl-carousel/owl.carousel.min.css" />
+<link rel="stylesheet" href="~/Scripts/owl-carousel/owl.theme.default.min.css" />
+<div class="slider-block">
+    @await Component.InvokeAsync("PromoSection")
+</div>
+<div class="about-us" id="about-us">
+    <div class="container">
+        <h2 class="main-caption">О нас</h2>
+        <div class="row">
+            <div class="text-block col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                @{
+                    string aboutText = (string)Model["aboutText"];
+                    <p>
+                        @Html.Raw(aboutText)
+                    </p>
+                }
+            </div>
+            @{
+                bool videoIsOn = (bool)Model["aboutVideoMode"];
+                string videoLink = (string)Model["aboutVideo"];
+                string imageLink = (string)Model["aboutImage"];
+                string text = (string)Model["aboutText"];
+                if (videoIsOn && !videoLink.Equals(string.Empty))
+                {
+                    <div class="video col-md-12 col-lg-6 col-xl-6">
+                        <iframe width="560" height="315" src="@videoLink"
+                                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                }
+                else
+                {
+                    <div class="image-block col-md-12 col-lg-6 col-xl-6">
+                        <img class="image-item" src="@imageLink" />
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+<div class="services" id="services">
+    <div class="services-block container">
+        <div class="row">
+            <h2 class="main-caption col-lg-12 col-md-12 col-sm-12">Наши услуги</h2>
+            @{ IEnumerable<arlen.Models.Service> services = (IEnumerable<arlen.Models.Service>)Model["services"];
+                int cnt = 1;
+                foreach (var svc in services)
+                {
+                    <a href="/Services/Details/@svc.Id" class="service-link col-lg-6 col-md-12 col-sm-12">
+                        <div class="service service-@cnt row">
+                            <div class="service-item col-lg-5 col-md-5 col-sm-5 icon icon-@cnt "></div>
+                            <div class="service-item col-lg-7 col-md-7 col-sm-7 services-text-style"><p>@svc.Name</p></div>
+                        </div>
+                    </a>
+                    cnt++;
+                }
+            }
+            @{
+                List<string> files = (List<string>)Model["files"];
+                for (int i = 0; i < files.Count - 1; i += 2)
+                {
+                    if (files[i] != "")
+                    {
+                        <a href="@files[i+1]" class="service-buttons-link col-lg-4 col-md-4 col-sm-12">
+                            <div class="download-button service-buttons">@files[i]</div>
+                        </a>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>
+<div class="news" id="news">
+    <div class="container">
+        @*{ Html.RenderAction("NewsSection"); }*@
+    </div>
+</div>
+
+<div class="events" id="events">
+    <div class="container">
+        @*{ Html.RenderAction("EventsSection"); }*@
+    </div>
+</div>
+
+<div class="customers" id="customers">
+    <div class="container">
+        @*{ Html.RenderAction("PartnersSection");}*@
+    </div>
+
+</div>
+
+<div class="feedback-form" id="contacts">
+    <div class="container">
+        <div class="row">
+            <h2 class="main-caption col-lg-12 col-md-12 col-sm-12">Оставьте заявку</h2>
+            @using (Html.BeginForm("Feedback", "Contacts", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-12" }))
+            {
+                <div class="form-group col-sm-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
+                    <input type="text" name="name" placeholder="Имя" class="form-control" id="feedback-name-field"
+                           data-val="true" data-val-required="Укажите имя" data-val-length-max="30"
+                           data-val-length="Длина поля не должна превышать 30 символов" />
+                    <span class="field-validation-valid" data-valmsg-for="name" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group col-sm-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
+                    <input type="text" name="phone" placeholder="Телефон" class="form-control" id="feedback-phone-field" />
+                </div>
+                <div class="form-group col-sm-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
+                    <input type="text" name="email" placeholder="Email" class="form-control" id="feedback-email-field"
+                           data-val="true" data-val-required="Укажите email" data-val-length-max="30"
+                           data-val-length="Длинна поля не должна превышать 30 символов" data-val-email="Введите корректный email" />
+                    <span class="field-validation-valid" data-valmsg-for="email" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group col-sm-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
+                    <textarea rows="4" name="message" placeholder="Введите сообщение" class="form-control" id="feedback-message-field"
+                              data-val="true" data-val-required="Укажите сообщение"></textarea>
+                    <span class="field-validation-valid" data-valmsg-for="message" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group col-sm-12 col-md-10 col-lg-8 col-xl-8 offset-xl-2 offset-lg-2 offset-md-1">
+                    <div id="g-recaptcha" class="g-recaptcha" data-sitekey="6Lf1BVsUAAAAAM5MlsnHBTD7hAE6hsjseLHdWjB7" data-callback="captcha_passed"></div>
+                </div>
+                <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 offset-xl-2 offset-lg-2 offset-md-1">
+                    <input id="submitButton" type="submit" class="form-control feedback-button" value="Отправить" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery-feedback-form-validation.js" type="text/javascript"></script>
+<script async src='https://www.google.com/recaptcha/api.js'></script>
+        @*Scripts.Render("~/bundles/jqueryval")
+        *Scripts.Render("~/bundles/inputmask")*@
+<script src="~/Scripts/owl-carousel/owl.carousel.min.js"></script>
+<script src="~/Scripts/owl-carousel/slider.js"></script>
+<script src="~/Scripts/forms_inputmask.js"></script>

@@ -1,5 +1,43 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model arlen.Models.Partner
 @{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<div class="container-fluid py-3">
+    <div class="row">
+        <div class="col-md-9 mx-auto">
+            <div class="card card-body">
+                <h3 class="text-center mb-4">Добавить</h3>
+                @Html.ValidationSummary(false)
+                <fieldset>
+                    @using (Html.BeginForm("Create", "Partners", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="returnURL" value="@ViewBag.returnURL" />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Link, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Link, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
+
+                                @Html.Editor("downl", new { htmlAttributes = new { @class = "form-control input-lg", @type = "file", @title = "Загрузить изображение с компьютера" } })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-12">
+                                <input class="btn btn-lg btn-block btn-login" value="Отправить" type="submit">
+                            </div>
+                        </div>
+                    }
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>

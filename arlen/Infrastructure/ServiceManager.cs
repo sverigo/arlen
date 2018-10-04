@@ -1,23 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using arlen.Models;
-
 
 namespace arlen.Infrastructure
 {
     public class ServiceManager
     {
         ArlenContext database;
+        public ServiceManager(ArlenContext db)
+        {
+            database = db;
+        }
 
         public IEnumerable<Service> AllServices
         {
             get { return database.Services.AsEnumerable(); }
-        }
-
-        public ServiceManager()
-        {
-            database = new ArlenContext();
         }
 
         public void AddService(Service svc)

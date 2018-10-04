@@ -1,0 +1,61 @@
+﻿*using System.Web.Optimization;
+@model arlen.Models.News
+
+@{
+    ViewBag.Title = "Edit News";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-3">
+    <div class="row">
+        <div class="col-md-9 mx-auto">
+            <div class="card card-body">
+                <h3 class="text-center mb-4">Редактировать новость</h3>
+                @Html.ValidationSummary(false)
+                <fieldset>
+                    @using (Html.BeginForm("Edit", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="returnURL" value="@ViewBag.returnURL" />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                @Html.TextAreaFor(model => model.Content, new { @class = "ckeditor" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Images, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @try
+                            {
+                                <div class="col-md-12">
+                                    <img src="@Model.Images" class="img-fluid" id="@Model.Images" />
+                                    @Html.CheckBox("check_" + Model.Images, true, new { id = "check" + Model.Images, @class = "mycheck" })
+
+                                </div>
+                            }
+                            catch { }
+                            <div class="col-md-12">
+                                @Html.Editor("Images", new { htmlAttributes = new { @class = "form-control", @type = "file", @multiple = "true" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-12">
+                                <input class="btn btn-lg btn-block btn-login" value="Отправить" type="submit">
+                            </div>
+                        </div>
+                    }
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>

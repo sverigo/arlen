@@ -1,0 +1,64 @@
+﻿@model IEnumerable<arlen.Models.Promo>
+
+<div id="main-carousel" class="carousel slide" data-ride="carousel" data-interval="3000">
+    <ol class="carousel-indicators">
+        @{
+            int num = Model.Count<arlen.Models.Promo>();
+            if (num > 0)
+            {
+                for (int i = 0; i < num; i++)
+                {
+                    if (i == 0)
+                    {
+                        <li data-target="#main-carousel" data-slide-to="@i" class="active"></li>
+                    }
+                    else
+                    {
+                        <li data-target="#main-carousel" data-slide-to="@i"></li>
+                    }
+                }
+            }
+        }
+    </ol>
+    <div class="carousel-inner">
+        @{ int cnt = 1; }
+        @foreach (var item in Model)
+        {
+            if (cnt == 1)
+            {
+                <div class="carousel-item active">
+                    <div class="darkened">
+                        <img class="d-block w-100" src="@item.Image" alt="Slide @cnt" />
+                    </div>
+
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3>@item.Text</h3>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="carousel-item">
+                    <div class="darkened">
+                        <img class="d-block w-100" src="@item.Image" alt="Slide @cnt" />
+                    </div>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3>@item.Text</h3>
+                    </div>
+                </div>
+            }
+            cnt++;
+        }
+        @if (num > 1)
+        {
+            <a class="carousel-control-prev" href="#main-carousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#main-carousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        }
+    </div>
+</div>

@@ -1,5 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<arlen.Models.Partner>
 @{
+    ViewBag.Title = "Index";
 }
+
+<div class="customers-index container-fluid">
+    <div class="customers-block container">
+        <div class="customers-header">
+            <h1>Наши клиенты</h1>
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="admin-block">
+                <a href="@Url.Action("Create", "Partners", new { area = "" })">
+                    <span class="admin-create-button">Добавить</span>
+                </a>
+            </div>
+        }
+        <div class="customers-content-block row">
+            @foreach (var item in Model)
+            {
+                <div class="customers-block-item col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                    <a href="@item.Link">
+                        <img class="customers-block-item-image" src="@item.Image" />
+                    </a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="customers-admin">
+                            <a href="/Partners/Edit/@item.Id" class="customers-edit">
+                                <span class="customers-admin-edit">Редактировать</span>
+                            </a>
+                            <a href="/Partners/Delete/@item.Id" class="customers-remove" style="color: red;" onclick="return confirm('Действительно удалить?');">
+                                <span class="customers-admin-remove">Удалить</span>
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

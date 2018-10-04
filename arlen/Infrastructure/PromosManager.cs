@@ -5,20 +5,19 @@ using arlen.Models;
 
 namespace arlen.Infrastructure
 {
-    public class PromoManager
+    public class PromosManager
     {
         ArlenContext database;
+        public PromosManager(ArlenContext db)
+        {
+            database = db;
+        }
 
         public IEnumerable<Promo> All
         {
             get { return database.Promos.AsEnumerable(); }
         }
-
-        public PromoManager()
-        {
-            database = new ArlenContext();
-        }
-
+        
         public void Add(Promo pm)
         {
             database.Promos.Add(pm);
