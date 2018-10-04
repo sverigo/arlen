@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using arlen.Models;
 using Microsoft.AspNetCore.Mvc;
+using arlen.Models;
 using arlen.Infrastructure;
 
 namespace arlen.Components

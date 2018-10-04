@@ -77,19 +77,19 @@
 </div>
 <div class="news" id="news">
     <div class="container">
-        @*{ Html.RenderAction("NewsSection"); }*@
+        @await Component.InvokeAsync("NewsSection")
     </div>
 </div>
 
 <div class="events" id="events">
     <div class="container">
-        @*{ Html.RenderAction("EventsSection"); }*@
+        @await Component.InvokeAsync("EventSection")
     </div>
 </div>
 
 <div class="customers" id="customers">
     <div class="container">
-        @*{ Html.RenderAction("PartnersSection");}*@
+        @await Component.InvokeAsync("PartnerSection")
     </div>
 
 </div>
