@@ -9,19 +9,11 @@ namespace arlen.Controllers
 {
     public class HomeController : Controller
     {
-        NewsManager newsManager;
-        EventsManager eventsManager;
-        PromosManager promosManager;
-        PartnerManager partnerManager;
         AccountManager accManager;
         ServiceManager svcManager;
 
         public HomeController(ArlenContext context)
         {
-            newsManager = new NewsManager(context);
-            eventsManager = new EventsManager(context);
-            promosManager = new PromosManager(context);
-            partnerManager = new PartnerManager(context);
             accManager = new AccountManager(context);
             svcManager = new ServiceManager(context);
         }
@@ -59,31 +51,5 @@ namespace arlen.Controllers
 
             return View(model);
         }
-
-        public PartialViewResult PromoSection()
-        {
-            var allPromos = promosManager.All.Take(5);
-            return PartialView(allPromos);
-        }
-
-        public PartialViewResult NewsSection()
-        {
-            var allNews = newsManager.AllNews.Reverse().Take(9);
-            return PartialView(allNews);
-        }
-
-        public PartialViewResult EventsSection()
-        {
-            var allEvents = eventsManager.AllEvents.Reverse().Take(9);
-            return PartialView(allEvents);
-        }
-
-        public PartialViewResult PartnersSection()
-        {
-            var allPartners = partnerManager.All;
-            return PartialView(allPartners);
-        }
-
     }
-    
 }
