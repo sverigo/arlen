@@ -1,14 +1,11 @@
-﻿*sing PagedList.Mvc
-*using System.Web.Optimization;
+﻿@*sing PagedList.Mvc
+        model PagedList.IPagedList<arlen.Models.News>*@
 @using System.Text.RegularExpressions;
-*model PagedList.IPagedList<arlen.Models.News>
 @model IEnumerable<arlen.Models.News>
-
 @{
     ViewBag.Title = "Новости";
 }
-
-*Styles.Render("~/Content/pagedlist")
+@*Styles.Render("~/Content/pagedlist")*@
 
 <div class="news-index container-fluid">
     <div class="news-block container">
@@ -41,9 +38,9 @@
             }
         </div>
         <div class="pageSwitcher">
-            *Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            @*Html.PagedListPager(Model, page => Url.Action("Index", new { page }))*@
         </div>
     </div>
 </div>
 
-<script src="~/Scripts/truncate-text.js"></script>
+<script src="~/js/truncate-text.js"></script>

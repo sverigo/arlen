@@ -1,5 +1,4 @@
-﻿using System.Web.Optimization;
-@model arlen.Models.Event
+﻿@model arlen.Models.Event
 
 @{
     ViewBag.Title = "Edit Event";
@@ -85,8 +84,14 @@
     </div>
 </div>
 
-<script src="~/Scripts/ckeditor/ckeditor.js"></script>
-Scripts.Render("~/bundles/inputmask")
+<script src="~/lib/ckeditor/ckeditor.js"></script>
+
+<script src="~/lib/inputmask/inputmask.min.js"></script>
+<script src="~/lib/inputmask/jquery.inputmask.min.js"></script>
+<script src="~/lib/inputmask/inputmask.extensions.min.js"></script>
+<script src="~/lib/inputmask/inputmask.date.extensions.min.js"></script>
+<script src="~/lib/inputmask/inputmask.numeric.extensions.min.js"></script>
+
 <script>
     $('#datetimefield').inputmask("datetime", {
         mask: "1-2-y h:s",
