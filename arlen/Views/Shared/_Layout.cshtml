@@ -12,11 +12,11 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body class="container-fluid">
-    @{ Html.RenderPartial("HeaderPartial");}
+    @await Component.InvokeAsync("HeaderPartial")
     <div class="main-page-content">
         @RenderBody()
     </div>
-    @{ Html.RenderPartial("FooterPartial"); }
+    @await  Component.InvokeAsync("FooterPartial")
 
     <script src="~/lib/jquery-scroll/jquery.localScroll.js"></script>
     <script src="~/lib/jquery-scroll/jquery.scrollTo.js"></script>

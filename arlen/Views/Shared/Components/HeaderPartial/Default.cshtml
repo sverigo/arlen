@@ -1,0 +1,83 @@
+﻿@*@using Resources;*@
+@model arlen.Models.User
+
+    <div class="header">
+        <nav class="container navbar navbar-expand-xl navbar-light">
+            <a class="navbar-brand" href="/"><img class="logo" src="@Model.Logo" /></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar" aria-controls="header-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="header-navbar">
+                <ul class="navbar-nav justify-content-between">
+                    <li class="nav-item">
+                        <a href="/#about-us" class="nav-link">@*Resource.*@AboutCompany</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/#services" class="nav-link">@*Resource.*@Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/#news" class="nav-link">@*Resource.*@News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/#events" class="nav-link">@*Resource.*@Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/#customers" class="nav-link">@*Resource.*@Clients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/#contacts" class="nav-link">@*Resource.*@Contacs</a>
+                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            @Html.ActionLink(/*@Resources.Resource.Account*/"Account", "Settings", "Account", new { area = "" }, new { @class = "nav-link" })
+                        </li>
+                    }
+                    <li class="nav-item">
+                        @{
+                            string first_phone = Model.Phones.Split('|')[0];
+                            string phoneRaw = System.Text.RegularExpressions.Regex.Replace(first_phone, @"[^0-9]", "");
+                        }
+                        <a class="nav-link nav-phone" href="tel:+@phoneRaw">@first_phone</a>
+                    </li>
+                    <li class="nav-item social">
+                        <a href="@Model.Youtube" target="_blank" class="nav-link social-item youtube"></a>
+                        <a href="@Model.Facebook" target="_blank" class="nav-link social-item facebook"></a>
+                        <a href="@Model.Linkedin" target="_blank" class="nav-link social-item linkedin"></a>
+                        <a href="@Model.Twitter" target="_blank" class="nav-link social-item twitter"></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @*@{ 
+                                if (Request.Cookies["Language"] != null)
+                                {
+                                    if (Request.Cookies["Language"].Value == "en")
+                                    {
+                                        <span>EN</span>
+                                    }
+                                    else if (Request.Cookies["Language"].Value == "ru")
+                                    {
+                                        <span>RU</span>
+                                    }
+                                    else if (Request.Cookies["Language"].Value == "uk")
+                                    {
+                                        <span>UK</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>RU</span>
+                                }
+                                
+                            }*@
+                        </a>
+                        <div class="dropdown-menu lang-switcher">
+                            @Html.ActionLink("RU", "Change", "Language", new { LanguageAbbreviation = "ru" }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("EN", "Change", "Language", new { LanguageAbbreviation = "en" }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("UK", "Change", "Language", new { LanguageAbbreviation = "uk" }, new { @class = "dropdown-item" })
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>

@@ -1,0 +1,53 @@
+﻿@model arlen.Models.User
+
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-logo col-xl-2 col-lg-2 offset-xl-1 offset-lg-0 offset-md-0 offset-sm-0">
+                <a href="/Home/Index"><img class="logo" src="@Model.Logo" /></a>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-3 col-sm-3 col-4 footer-navbar" id="footer-navbar">
+                <ul class="footer-nav-links">
+                    <li><a href="/#about-us">О нас</a></li>
+                    <li><a href="/#services">Услуги</a></li>
+                    <li><a href="/#news">Новости</a></li>
+                    <li><a href="/#events">Тренинги</a></li>
+                    <li><a href="/#contacts">Контакты</a></li>
+                    <li><a href="/#customers">Клиенты</a></li>
+                </ul>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-9 col-sm-9 col-8 row footer-social">
+                <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12">
+                    <h6 class="social-caption">Мы в соц. сетях</h6>
+                    <div class="social">
+                        <a href="@Model.Youtube" target="_blank" class="social-item youtube"></a>
+                        <a href="@Model.Facebook" target="_blank" class="social-item facebook"></a>
+                        <a href="@Model.Linkedin" target="_blank" class="social-item linkedin"></a>
+                        <a href="@Model.Twitter" target="_blank" class="social-item twitter"></a>
+                    </div>
+                </div>
+                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12">
+                    @{
+                        string[] phones = Model.Phones.Split('|');
+                        if (phones.Length > 0)
+                        {
+                            foreach (string phone in phones)
+                            {
+                                string phoneRaw = System.Text.RegularExpressions.Regex.Replace(phone, @"[^0-9]", "");
+                                <a class="feedback-item footer-phone" href="tel:+@phoneRaw">@phone</a>
+                            }
+                        }
+                    }
+                    @{
+                        string viberRaw = System.Text.RegularExpressions.Regex.Replace(Model.Viber, @"[^0-9]", "");
+                        string whatsappRaw = System.Text.RegularExpressions.Regex.Replace(Model.Whatsapp, @"[^0-9]", "");
+                    }
+                    <a class="feedback-item footer-viber" href="viber://chat?number=@viberRaw">@Model.Viber</a>
+                    <a class="feedback-item footer-whatsapp" href="https://api.whatsapp.com/send?phone=@whatsappRaw">@Model.Whatsapp</a>
+                    <a class="feedback-item footer-gmail" href="mailto:@Model.Emails">@Model.Emails</a>
+                    <div class="footer-address" id="footer-address">@Model.Address</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
