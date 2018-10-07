@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace arlen.Controllers
 {
@@ -55,6 +56,7 @@ namespace arlen.Controllers
         }
 
         // GET: Account/Settings
+        [Authorize]
         public ActionResult Settings()
         {
             AccountManager manager = new AccountManager(database);
@@ -65,6 +67,7 @@ namespace arlen.Controllers
 
         // POST: Account/Settings
         [HttpPost]
+        [Authorize]
         public ActionResult Settings(User account)
         {
             AccountManager manager = new AccountManager(database);

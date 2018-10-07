@@ -2,6 +2,7 @@
 using arlen.Models;
 using arlen.Infrastructure;
 using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Authorization;
 
 namespace arlen.Controllers
 {
@@ -37,6 +38,7 @@ namespace arlen.Controllers
         }
 
         // GET: Services/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -44,6 +46,7 @@ namespace arlen.Controllers
 
         // POST: Services/Create
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Service svc)
         {
@@ -69,6 +72,7 @@ namespace arlen.Controllers
         }
 
         // GET: Services/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -85,6 +89,7 @@ namespace arlen.Controllers
 
         // POST: Services/Edit/5
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Service svc)
         {
@@ -110,6 +115,7 @@ namespace arlen.Controllers
         }
 
         // GET: Services/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id != null)

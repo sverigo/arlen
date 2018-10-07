@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using arlen.Infrastructure;
 using arlen.Models;
 using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Authorization;
 
 namespace arlen.Controllers
 {
+    [Authorize]
     public class PartnersController : Controller
     {
         PartnerManager pmManager;

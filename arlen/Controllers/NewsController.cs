@@ -4,6 +4,7 @@ using arlen.Models;
 using arlen.Infrastructure;
 using Microsoft.AspNetCore.Hosting.Internal;
 using System;
+using Microsoft.AspNetCore.Authorization;
 //using PagedList;
 
 namespace arlen.Controllers
@@ -45,6 +46,7 @@ namespace arlen.Controllers
         }
 
         // GET: News/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -52,6 +54,7 @@ namespace arlen.Controllers
 
         // POST: News/Create
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create(News news)
         {
@@ -86,6 +89,7 @@ namespace arlen.Controllers
         }
 
         // GET: News/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -102,6 +106,7 @@ namespace arlen.Controllers
 
         // POST: News/Edit/5
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(News news)
         {
@@ -160,6 +165,7 @@ namespace arlen.Controllers
         }
 
         // GET: News/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id != null)

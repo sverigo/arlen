@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using arlen.Models;
 using arlen.Infrastructure;
 using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Authorization;
 
 namespace arlen.Controllers
 {
+    [Authorize]
     public class PromosController : Controller
     {
         PromosManager pmManager;
