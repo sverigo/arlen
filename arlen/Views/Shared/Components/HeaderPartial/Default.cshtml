@@ -48,18 +48,19 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            @*@{ 
-                                if (Request.Cookies["Language"] != null)
+                            @{ 
+                                if (Context.Request.Cookies.ContainsKey("Language"))
                                 {
-                                    if (Request.Cookies["Language"].Value == "en")
+                                    var cookie = Context.Request.Cookies.First(c => c.Key == "Language");
+                                    if (cookie.Value == "en")
                                     {
                                         <span>EN</span>
                                     }
-                                    else if (Request.Cookies["Language"].Value == "ru")
+                                    else if (cookie.Value == "ru")
                                     {
                                         <span>RU</span>
                                     }
-                                    else if (Request.Cookies["Language"].Value == "uk")
+                                    else if (cookie.Value == "uk")
                                     {
                                         <span>UK</span>
                                     }
@@ -68,8 +69,7 @@
                                 {
                                     <span>RU</span>
                                 }
-                                
-                            }*@
+                            }
                         </a>
                         <div class="dropdown-menu lang-switcher">
                             @Html.ActionLink("RU", "Change", "Language", new { LanguageAbbreviation = "ru" }, new { @class = "dropdown-item" })

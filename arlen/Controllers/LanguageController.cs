@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System.Threading;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace arlen.Controllers
@@ -10,84 +9,24 @@ namespace arlen.Controllers
     public class LanguageController : Controller
     {
         // GET: Language
-        public ActionResult Index()
+        public ActionResult Change(String LanguageAbbreviation)
         {
-            return View();
-        }
-
-        // GET: Language/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Language/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Language/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            if (LanguageAbbreviation != null)
             {
-                // TODO: Add insert logic here
+                try
+                {
+                    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(LanguageAbbreviation);
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(LanguageAbbreviation);
+                }
+                catch
+                {
+                    return RedirectToAction("Index", "Home");
+                }
 
-                return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
-        }
+            HttpContext.Response.Cookies.Append("Language", LanguageAbbreviation);
 
-        // GET: Language/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Language/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Language/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Language/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }
