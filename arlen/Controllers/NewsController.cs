@@ -2,13 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using arlen.Models;
 using arlen.Infrastructure;
+using Microsoft.AspNetCore.Hosting.Internal;
+using System;
 //using PagedList;
 
 namespace arlen.Controllers
 {
     public class NewsController : Controller
     {
-
+        HostingEnvironment hosting;
         NewsManager newsManager, managerForImages;
         public NewsController(ArlenContext db)
         {
@@ -57,22 +59,21 @@ namespace arlen.Controllers
             {
                 try
                 {
-                    /*
                     string new_image = Url.Content("~/Content/images/default-news-img.png");
-                    for (int i = 0; i < Request.Files.Count; i++)
+                    for (int i = 0; i < Request.Form.Files.Count; i++)
                     {
-                        var image = Request.Files[i];
+                        var image = Request.Form.Files[i];
                         if (image != null && image.ContentType.Contains("image/"))
                         {
-                            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                            string fileName = System.Guid.NewGuid().ToString() + System.IO.Path.GetExtension(image.FileName);
 
-                            GoogleDriveManager driveClient = new GoogleDriveManager();
+                            GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
 
                             new_image = driveClient.DriveUploadAndGetSrc(image, DRIVE_FOLDER_NAME);
                         }
                     }
                     news.Images = new_image;
-                    */
+                    
                     newsManager.AddNews(news);
                     return RedirectToAction("Index");
                 }
@@ -107,14 +108,14 @@ namespace arlen.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {/*
+                {
                     string new_image = Url.Content("~/Content/images/default-news-img.png");
                     // EDIT EXISTING IMAGE
                     string existingImages = managerForImages.FindNewsById(news.Id).Images;
                     if (!String.IsNullOrEmpty(existingImages))
                     {
                         string[] images = existingImages.Split('|');
-                        foreach (string field in Request.Form)
+                        foreach (string field in Request.Form.Keys)
                         {
                             if (field.Contains("check_"))
                             {
@@ -122,7 +123,7 @@ namespace arlen.Controllers
                                 string src = field.Split('_')[1];
                                 if (checkbox == "false")
                                 {
-                                    GoogleDriveManager driveClient = new GoogleDriveManager();
+                                    GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
                                     driveClient.DriveMoveFileToTrash(src);
                                 }
                                 else
@@ -134,19 +135,19 @@ namespace arlen.Controllers
                     }
 
                     // UPLOADING NEW IMAGE
-                    for (int i = 0; i < Request.Files.Count; i++)
+                    for (int i = 0; i < Request.Form.Files.Count; i++)
                     {
-                        var image = Request.Files[i];
+                        var image = Request.Form.Files[i];
                         if (image != null && image.ContentType.Contains("image/"))
                         {
-                            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                            string fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(image.FileName);
 
-                            GoogleDriveManager driveClient = new GoogleDriveManager();
+                            GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
                             new_image = driveClient.DriveUploadAndGetSrc(image, DRIVE_FOLDER_NAME);
                         }
                     }
                     news.Images = new_image;
-                    */
+                    
                     newsManager.EditNews(news);
                     return Redirect("/News/Details/" + news.Id);
                 }
@@ -166,16 +167,16 @@ namespace arlen.Controllers
                 News n = newsManager.FindNewsById(id);
                 if (n != null)
                 {
-                    /*string[] images = n.Images.Split('|');
+                    string[] images = n.Images.Split('|');
                     foreach (string src in images)
                     {
                         if (src.Contains("default"))    //don't delete default images
                         {
                             continue;
                         }
-                        GoogleDriveManager driveClient = new GoogleDriveManager();
+                        GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
                         driveClient.DriveMoveFileToTrash(src);
-                    }*/
+                    }
                     newsManager.RemoveNewsById(id);
                 }
             }

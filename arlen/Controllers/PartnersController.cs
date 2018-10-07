@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using arlen.Infrastructure;
 using arlen.Models;
+using Microsoft.AspNetCore.Hosting.Internal;
 
 namespace arlen.Controllers
 {
     public class PartnersController : Controller
     {
         PartnerManager pmManager;
+        HostingEnvironment hosting;
         public PartnersController(ArlenContext db)
         {
             pmManager = new PartnerManager(db);
@@ -37,16 +35,16 @@ namespace arlen.Controllers
         public ActionResult Create(Partner pm)
         {
             if (ModelState.IsValid)
-            {/*
-                var file = Request.Files["downl"];
+            {
+                var file = Request.Form.Files["downl"];
                 if (file != null && file.ContentType.Contains("image/"))
                 {
                     string fileName = System.Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
 
-                    GoogleDriveManager driveClient = new GoogleDriveManager();
+                    GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
 
                     pm.Image = driveClient.DriveUploadAndGetSrc(file, DRIVE_FOLDER_NAME);
-                }*/
+                }
                 pmManager.Add(pm);
                 return Redirect("/Partners");
             }
@@ -77,16 +75,16 @@ namespace arlen.Controllers
         public ActionResult Edit(Partner pm)
         {
             if (ModelState.IsValid)
-            {/*
-                var file = Request.Files["downl"];
+            {
+                var file = Request.Form.Files["downl"];
                 if (file != null && file.ContentType.Contains("image/"))
                 {
                     string fileName = System.Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
 
-                    GoogleDriveManager driveClient = new GoogleDriveManager();
+                    GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
 
                     pm.Image = driveClient.DriveUploadAndGetSrc(file, DRIVE_FOLDER_NAME);
-                }*/
+                }
                 pmManager.Edit(pm);
                 return Redirect("/Partners");
             }

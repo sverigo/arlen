@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using arlen.Models;
 using arlen.Infrastructure;
+using Microsoft.AspNetCore.Hosting.Internal;
 
 namespace arlen.Controllers
 {
@@ -13,6 +9,7 @@ namespace arlen.Controllers
     {
         private string DRIVE_FOLDER_FILES = "user_files";
         ServiceManager svcManager;
+        HostingEnvironment hosting;
         public ServicesController(ArlenContext db)
         {
             svcManager = new ServiceManager(db);
@@ -51,17 +48,17 @@ namespace arlen.Controllers
         public ActionResult Create(Service svc)
         {
             if (ModelState.IsValid)
-            {/*
+            {
                 string file_name = Request.Form["file_name"];
                 string link = Request.Form["link"];
-                var file = Request.Files["download"];
-                if (file != null && file.ContentLength > 0)
+                var file = Request.Form.Files["download"];
+                if (file != null && file.Length > 0)
                 {
-                    GoogleDriveManager driveClient = new GoogleDriveManager();
+                    GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
                     link = driveClient.DriveUploadAndGetSrc(file, DRIVE_FOLDER_FILES);
                 }
                 svc.File = file_name + "|" + link;
-                */
+                
                 svcManager.AddService(svc);
                 return Redirect("/Services/Details/" + svc.Id);
             }
@@ -92,17 +89,17 @@ namespace arlen.Controllers
         public ActionResult Edit(Service svc)
         {
             if (ModelState.IsValid)
-            {/*
+            {
                 string file_name = Request.Form["file_name"];
                 string link = Request.Form["link"];
-                var file = Request.Files["download"];
-                if (file != null && file.ContentLength > 0)
+                var file = Request.Form.Files["download"];
+                if (file != null && file.Length > 0)
                 {
-                    GoogleDriveManager driveClient = new GoogleDriveManager();
+                    GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
                     link = driveClient.DriveUploadAndGetSrc(file, DRIVE_FOLDER_FILES);
                 }
                 svc.File = file_name + "|" + link;
-                */
+                
                 svcManager.EditService(svc);
                 return Redirect("/Services/Details/" + svc.Id);
             }

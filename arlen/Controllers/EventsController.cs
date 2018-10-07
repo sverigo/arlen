@@ -2,12 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using arlen.Models;
 using arlen.Infrastructure;
+using Microsoft.AspNetCore.Hosting.Internal;
+using System;
 //using PagedList;
 
 namespace arlen.Controllers
 {
     public class EventsController : Controller
     {
+        HostingEnvironment hosting;
         EventsManager eventsManager, managerForImages;
         public EventsController(ArlenContext db)
         {
@@ -57,26 +60,26 @@ namespace arlen.Controllers
             {
                 try
                 {
-                    /*string new_image = Url.Content("~/Content/images/default-event-img.png");
-                    var image = Request.Files["Images"];
+                    string new_image = Url.Content("~/Content/images/default-event-img.png");
+                    var image = Request.Form.Files["Images"];
                     if (image != null && image.ContentType.Contains("image/"))
                     {
-                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                        GoogleDriveManager driveClient = new GoogleDriveManager();
+                        string fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(image.FileName);
+                        GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
                         new_image = driveClient.DriveUploadAndGetSrc(image, DRIVE_FOLDER_IMAGES);
                     }
                     e.Images = new_image;
 
                     string file_name = Request.Form["file_name"];
                     string link = Request.Form["link"];
-                    var file = Request.Files["download"];
-                    if (file != null && file.ContentLength > 0)
+                    var file = Request.Form.Files["download"];
+                    if (file != null && file.Length > 0)
                     {
-                        GoogleDriveManager driveClient = new GoogleDriveManager();
+                        GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
                         link = driveClient.DriveUploadAndGetSrc(file, DRIVE_FOLDER_FILES);
                     }
                     e.Files = file_name + "|" + link;
-                    */
+                    
                     eventsManager.AddEvent(e);
                     return RedirectToAction("Index");
                 }
@@ -112,14 +115,14 @@ namespace arlen.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {/*
+                {
                     string new_image = Url.Content("~/Content/images/default-event-img.png");
                     // EDIT EXISTING IMAGES
                     string existingImages = managerForImages.FindEventById(e.Id).Images;
                     if (!String.IsNullOrEmpty(existingImages))
                     {
                         string[] images = existingImages.Split('|');
-                        foreach (string field in Request.Form)
+                        foreach (string field in Request.Form.Keys)
                         {
                             if (field.Contains("check_"))
                             {
@@ -127,7 +130,7 @@ namespace arlen.Controllers
                                 string src = field.Split('_')[1];
                                 if (checkbox == "false" && !src.Contains("default"))
                                 {
-                                    GoogleDriveManager driveClient = new GoogleDriveManager();
+                                    GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
                                     driveClient.DriveMoveFileToTrash(src);
                                 }
                                 else
@@ -139,14 +142,14 @@ namespace arlen.Controllers
                     }
 
                     // UPLOADING NEW IMAGES
-                    for (int i = 0; i < Request.Files.Count; i++)
+                    for (int i = 0; i < Request.Form.Files.Count; i++)
                     {
-                        var image = Request.Files[i];
+                        var image = Request.Form.Files[i];
                         if (image != null && image.ContentType.Contains("image/"))
                         {
-                            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                            string fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(image.FileName);
 
-                            GoogleDriveManager driveClient = new GoogleDriveManager();
+                            GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
                             new_image = driveClient.DriveUploadAndGetSrc(image, DRIVE_FOLDER_IMAGES);
                         }
                     }
@@ -155,17 +158,13 @@ namespace arlen.Controllers
                     // Зарузка и формирование файла
                     string file_name = Request.Form["file_name"];
                     string link = Request.Form["link"];
-                    var file = Request.Files["download"];
-                    if (file != null && file.ContentLength > 0)
+                    var file = Request.Form.Files["download"];
+                    if (file != null && file.Length > 0)
                     {
-                        GoogleDriveManager driveClient = new GoogleDriveManager();
+                        GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
                         link = driveClient.DriveUploadAndGetSrc(file, DRIVE_FOLDER_FILES);
                     }
                     e.Files = file_name + "|" + link;
-                    */
-
-                    //delete next line when CORE completed:
-                    e.Files = "1|2";
 
                     eventsManager.EditEvent(e);
                     return Redirect("/Events/Details/" + e.Id);
@@ -186,16 +185,16 @@ namespace arlen.Controllers
                 Event e = eventsManager.FindEventById(id);
                 if (e != null)
                 {
-                    /*string[] images = e.Images.Split('|');
+                    string[] images = e.Images.Split('|');
                     foreach (string src in images)
                     {
                         if (src.Contains("default"))    //don't delete default image
                         {
                             continue;
                         }
-                        GoogleDriveManager driveClient = new GoogleDriveManager();
+                        GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
                         driveClient.DriveMoveFileToTrash(src);
-                    }*/
+                    }
                     eventsManager.RemoveEventById(id);
                 }
             }

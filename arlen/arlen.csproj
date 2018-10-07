@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include=".credentials\client_secret.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.35.2.1365" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
@@ -20,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Content\images\" />
     <Folder Include="wwwroot\fonts\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>

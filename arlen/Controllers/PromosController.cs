@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using arlen.Models;
 using arlen.Infrastructure;
+using Microsoft.AspNetCore.Hosting.Internal;
 
 namespace arlen.Controllers
 {
     public class PromosController : Controller
     {
         PromosManager pmManager;
+        HostingEnvironment hosting;
         public PromosController(ArlenContext db)
         {
             pmManager = new PromosManager(db);
@@ -37,16 +35,16 @@ namespace arlen.Controllers
         public ActionResult Create(Promo pm)
         {
             if (ModelState.IsValid)
-            {/*
-                var file = Request.Files["downl"];
+            {
+                var file = Request.Form.Files["downl"];
                 if (file != null && file.ContentType.Contains("image/"))
                 {
                     string fileName = System.Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
 
-                    GoogleDriveManager driveClient = new GoogleDriveManager();
+                    GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
 
                     pm.Image = driveClient.DriveUploadAndGetSrc(file, DRIVE_FOLDER_NAME);
-                }*/
+                }
                 pmManager.Add(pm);
                 return Redirect("/Promos");
             }
@@ -77,16 +75,16 @@ namespace arlen.Controllers
         public ActionResult Edit(Promo pm)
         {
             if (ModelState.IsValid)
-            {/*
-                var file = Request.Files["downl"];
+            {
+                var file = Request.Form.Files["downl"];
                 if (file != null && file.ContentType.Contains("image/"))
                 {
                     string fileName = System.Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
 
-                    GoogleDriveManager driveClient = new GoogleDriveManager();
+                    GoogleDriveManager driveClient = new GoogleDriveManager(hosting);
 
                     pm.Image = driveClient.DriveUploadAndGetSrc(file, DRIVE_FOLDER_NAME);
-                }*/
+                }
                 pmManager.Edit(pm);
                 return Redirect("/Promos");
             }
