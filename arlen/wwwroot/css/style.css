@@ -908,6 +908,7 @@ input[type="checkbox"].input-validation-error {
     margin-top: 20px;
     padding: 0;
     position: relative;
+    min-height: 120px;
 }
 
     .block-item .block-item-image {

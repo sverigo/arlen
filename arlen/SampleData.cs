@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using arlen.Models;
 
 namespace arlen
@@ -23,7 +20,7 @@ namespace arlen
                     Emails = "your.email@gmail.com",
                     Phones = "380953697277",
                     Files = "^|^|^",
-                    Logo = "/Content/Images/logo.png",
+                    Logo = "/images/logo.png",
 
                     Facebook = "https://facebook.com/",
                     Twitter = "https://twitter.com/",
@@ -32,7 +29,7 @@ namespace arlen
                     Viber = "380953697277",
                     Whatsapp = "380953697277",
 
-                    AboutImage = "/Content/images/about-us.png",
+                    AboutImage = "/images/about-us.png",
                     AboutVideoMode = false,
                     AboutText = "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
                     AboutVideo = ""
@@ -77,7 +74,7 @@ namespace arlen
 
             if (!context.Promos.Any())
             {
-                string promoImage = "/Content/images/default-slider.jpg";
+                string promoImage = "/images/default-slider.jpg";
                 Promo[] promos =
                 {
                 new Promo{ Text = "Уверенность в завтрашнем дне",
