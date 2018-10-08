@@ -26,7 +26,7 @@ namespace arlen
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ArlenContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<ArlenContext>(options => options.UseMySql(connection));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
