@@ -6,7 +6,7 @@
         {
             foreach (var item in Model)
             {
-                <a class="item" href="/News/NewsDetails/@item.Id">
+                <a class="item" href="/News/Details/@item.Id">
                     <div class="owl-text">
                         <span class="date">@item.CreateTime.ToShortDateString()</span>
                         <p class="title">@item.Title</p>
