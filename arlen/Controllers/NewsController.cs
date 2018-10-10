@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using arlen.Models;
+using arlen.Models.ViewModel;
 using arlen.Infrastructure;
 using Microsoft.AspNetCore.Hosting.Internal;
 using System;
 using Microsoft.AspNetCore.Authorization;
-//using PagedList;
 
 namespace arlen.Controllers
 {
@@ -21,13 +21,22 @@ namespace arlen.Controllers
         private string DRIVE_FOLDER_NAME = "user_images";
 
         // GET: News
-        public ActionResult Index(int? page)
+        public ActionResult Index(int page=1)
         {
-            var allNews = newsManager.AllNews;
+            var allNews = newsManager.AllNews.Reverse();
             int pageSize = 10;
-            int pageNumber = (page ?? 1);
+                
+            var count = allNews.Count();
+            var items = allNews.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-            return View(allNews.OrderByDescending(a => a.Id)/*.ToPagedList(pageNumber, pageSize)*/);
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+            NewsViewModel viewModel = new NewsViewModel
+            {
+                PageViewModel = pageViewModel,
+                PagedNewsList = items
+            };
+
+            return View(viewModel);
         }
 
         // GET: News/Details/5
@@ -62,7 +71,7 @@ namespace arlen.Controllers
             {
                 try
                 {
-                    string new_image = Url.Content("~/Content/images/default-news-img.png");
+                    string new_image = Url.Content("/images/default-news-img.png");
                     for (int i = 0; i < Request.Form.Files.Count; i++)
                     {
                         var image = Request.Form.Files[i];
@@ -114,7 +123,7 @@ namespace arlen.Controllers
             {
                 try
                 {
-                    string new_image = Url.Content("~/Content/images/default-news-img.png");
+                    string new_image = Url.Content("/images/default-news-img.png");
                     // EDIT EXISTING IMAGE
                     string existingImages = managerForImages.FindNewsById(news.Id).Images;
                     if (!String.IsNullOrEmpty(existingImages))

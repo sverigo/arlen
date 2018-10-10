@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using arlen.Models;
+using arlen.Models.ViewModel;
 using arlen.Infrastructure;
 using Microsoft.AspNetCore.Hosting.Internal;
 using System;
 using Microsoft.AspNetCore.Authorization;
-//using PagedList;
 
 namespace arlen.Controllers
 {
@@ -22,13 +22,22 @@ namespace arlen.Controllers
         private string DRIVE_FOLDER_FILES = "user_files";
 
         // GET: Events
-        public ActionResult Index(int? page)
+        public ActionResult Index(int page=1)
         {
-            var events = eventsManager.AllEvents;
+            var events = eventsManager.AllEvents.Reverse();
             int pageSize = 10;
-            int pageNumber = (page ?? 1);
 
-            return View(events.OrderByDescending(a => a.Id)/*.ToPagedList(pageNumber, pageSize)*/);
+            var count = events.Count();
+            var items = events.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+            EventViewModel viewModel = new EventViewModel
+            {
+                PageViewModel = pageViewModel,
+                PagedEventList = items
+            };
+
+            return View(viewModel);
         }
 
         // GET: Events/Details/5
@@ -63,7 +72,7 @@ namespace arlen.Controllers
             {
                 try
                 {
-                    string new_image = Url.Content("~/Content/images/default-event-img.png");
+                    string new_image = Url.Content("/images/default-event-img.png");
                     var image = Request.Form.Files["Images"];
                     if (image != null && image.ContentType.Contains("image/"))
                     {
@@ -121,7 +130,7 @@ namespace arlen.Controllers
             {
                 try
                 {
-                    string new_image = Url.Content("~/Content/images/default-event-img.png");
+                    string new_image = Url.Content("/images/default-event-img.png");
                     // EDIT EXISTING IMAGES
                     string existingImages = managerForImages.FindEventById(e.Id).Images;
                     if (!String.IsNullOrEmpty(existingImages))
