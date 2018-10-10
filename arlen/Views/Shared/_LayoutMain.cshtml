@@ -1,7 +1,4 @@
-﻿@using arlen.Infrastructure;
-@using arlen.Models;
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -21,11 +18,7 @@
     </div>
     @await  Component.InvokeAsync("FooterPartial")
     <div id="map" style="height: 300px;">
-        @*@{
-            AccountManager accManager = new AccountManager();
-            User acc = accManager.GetAccount(1);
-        }
-        @Html.Raw(acc.Map)*@
+        @await Component.InvokeAsync("MapSection");
     </div>
     <script src="~/lib/jquery-scroll/jquery.localScroll.js"></script>
     <script src="~/lib/jquery-scroll/jquery.scrollTo.js"></script>

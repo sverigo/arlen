@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using arlen.Models;
+using System.Collections.Generic;
 
 namespace arlen
 {
@@ -110,6 +111,55 @@ namespace arlen
                 foreach (Partner p in partners)
                 {
                     context.Partners.Add(p);
+                }
+            }
+
+            if (!context.NewsList.Any())
+            {
+                int number = 10;
+
+                List<Models.News> news = new List<News>();
+                System.DateTime createTime = System.DateTime.Now;
+                string defaultImage = "/images/default-news-img.png";
+
+                for (int i = 0; i < number; i++)
+                {
+                    news.Add(new News {
+                        Title = "Тестовая новость" + i,
+                        Content = "Тестовое содержание новости" + i,
+                        CreateTime = createTime,
+                        Images = defaultImage
+                    });
+                }
+                foreach (News n in news)
+                {
+                    context.NewsList.Add(n);
+                }
+            }
+
+            if (!context.Events.Any())
+            {
+                int number = 10;
+
+                List<Models.Event> events = new List<Event>();
+                System.DateTime createTime = System.DateTime.Now;
+                System.DateTime date = System.DateTime.UtcNow;
+                string defaultImage = "/images/default-event-img.png";
+
+                for (int i = 0; i < number; i++)
+                {
+                    events.Add(new Event {
+                        Title = "Тестовый ивент " + i,
+                        Content = "" + i,
+                        CreateTime = createTime,
+                        Date = date,
+                        Place = "Условное место",
+                        Images = defaultImage
+                    });
+                }
+                foreach (Event e in events)
+                {
+                    context.Events.Add(e);
                 }
             }
 
