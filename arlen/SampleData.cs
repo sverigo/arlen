@@ -125,8 +125,8 @@ namespace arlen
                 for (int i = 0; i < number; i++)
                 {
                     news.Add(new News {
-                        Title = "Тестовая новость" + i,
-                        Content = "Тестовое содержание новости" + i,
+                        Title = "Тестовая новость " + i,
+                        Content = "Тестовое содержание новости " + i,
                         CreateTime = createTime,
                         Images = defaultImage
                     });
@@ -150,7 +150,7 @@ namespace arlen
                 {
                     events.Add(new Event {
                         Title = "Тестовый ивент " + i,
-                        Content = "" + i,
+                        Content = "Тестовое содержание ивента " + i,
                         CreateTime = createTime,
                         Date = date,
                         Place = "Условное место",

@@ -30,7 +30,11 @@ namespace arlen.Infrastructure
         public void EditEvent(Event e)
         {
             e.CreateTime = DateTime.Now;
+            Event ex = database.Entry(e).Entity;
+            
+            database.Entry(e).Property("CreateTime").IsModified = true;
             database.Entry(e).State = EntityState.Modified;
+
             database.SaveChanges();
         }
 

@@ -16,16 +16,20 @@
         <div class="details-content">
             @Html.Raw(Model.Content)
         </div>
-        *{
-            string[] file = Model.Files.Split('|');
-            if (file[0].Length > 0 && file[1].Length > 0)
+        @{
+            if (!string.IsNullOrEmpty(Model.Files))
             {
-                <div class="details-download">
-                    <a href="*file[1]">
-                        <span class="download-button">*file[0]</span>
-                    </a>
-                </div>
+                string[] file = Model.Files.Split('|');
+                if (file[0].Length > 0 && file[1].Length > 0)
+                {
+                    <div class="details-download">
+                        <a href="@file[1]">
+                            <span class="download-button">@file[0]</span>
+                        </a>
+                    </div>
+                }
             }
+
         }
 
         <div class="details-return">

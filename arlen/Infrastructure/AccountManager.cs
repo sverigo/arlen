@@ -15,8 +15,15 @@ namespace arlen.Infrastructure
         {
             if (id != null || id <= 0)
             {
-                User user = database.Users.Where(a => a.Id == id).FirstOrDefault();
-                return user;
+                try
+                {
+                    User user = database.Users.Where(a => a.Id == id).FirstOrDefault();
+                    return user;
+                }
+                catch
+                {
+                    return null;
+                }
             }
             return null;
         }

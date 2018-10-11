@@ -60,7 +60,19 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.Files, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-12">
-                                @*{ string[] file = Model.Files.Split('|'); }
+                                @{string[] file = new string[] { "", "" };
+                                }
+                                @{
+                                    if (Model != null)
+                                    {
+                                        if (Model.Files != null)
+                                        {
+                                            file = Model.Files.Split('|');
+                                        }
+                                    }
+
+                                }
+
                                 @Html.TextBox("file_name", file[0], new { @class = "form-control input-lg", @placeholder = "Введите заголовок", @autofocus = true, @title = "Заголовок" })
 
                                 @Html.Label("Ссылка")
@@ -68,7 +80,7 @@
 
                                 @Html.Label("Загрузить файл")
                                 @Html.Editor("download", new { htmlAttributes = new { @class = "form-control input-lg", @type = "file", @title = "Загрузить файл с компьютера" } })
-                                *@
+                               
                             </div>
                         </div>
 
