@@ -8,11 +8,13 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Success</title>
+    <link rel="stylesheet" type="text/css" href="~/css/style.css" />
 </head>
 <body>
-    <h1>Success</h1>
-    <p>Редирект спустя 3 секунды</p>
-    @Html.ActionLink("Home", "Index");
+    <div class="feed-container">
+        <div class="feed-msg feed-success">SUCCESS</div>
+        <p>Возврат на <a href="/Home/Index">главную</a> через 3 секунды...</p>
+    </div>
 </body>
 </html>
 
